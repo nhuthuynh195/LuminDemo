@@ -1,0 +1,3 @@
+[submodule "submodules/pdftron-react-native"]
+	path = submodules/pdftron-react-native
+	url = git@bitbucket.org:nitrolabs/pdftron-react-native.git
