@@ -1,29 +1,227 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.lumindemo">
+	package="com.lumindemo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme">
-      <meta-data
+
+	<!-- <queries>
+		<package android:name="com.dropbox.android" />
+	</queries> -->
+
+	<application
+		android:name=".MainApplication"
+		android:label="@string/app_name"
+		android:icon="@mipmap/ic_launcher"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:allowBackup="false"
+		android:largeHeap="true"
+		android:theme="@style/AppTheme"
+		>
+		<!-- <provider
+			android:name="androidx.core.content.FileProvider"
+			android:authorities="com.luminpdfapp.fileprovider"
+			android:grantUriPermissions="true"
+			tools:replace="android:authorities"
+			>
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/file_paths"
+				tools:replace="android:resource"
+				/>
+		</provider> -->
+		<!-- <meta-data
+			android:name="asset_statements"
+			android:resource="@string/asset_statements" /> -->
+		<!-- Add license key in meta-data tag here. This should be inside the application tag. -->
+		<meta-data
 			android:name="pdftron_license_key"
 			android:value="${pdftronLicenseKey}" />
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-        android:launchMode="singleTask"
-        android:theme="@style/LuminAppTheme"
-        android:windowSoftInputMode="adjustResize">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-    </application>
+
+		<activity
+			android:name=".MainActivity"
+			android:label="@string/app_name"
+			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+			android:exported="true"
+			android:launchMode="singleTask"
+			android:theme="@style/LuminAppTheme"
+			android:windowSoftInputMode="adjustPan">
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data android:scheme="luminmobile" />
+			</intent-filter>
+
+			<!-- DEEPLINK listen to all link -->
+			<intent-filter android:autoVerify="true">
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data
+					android:scheme="https"
+					android:host="lumin-mobile.app.link"
+				/>
+			</intent-filter>
+
+			<intent-filter android:autoVerify="true">
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data
+					android:scheme="https"
+					android:host="lumin-mobile-alternate.app.link"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for mobile-staging -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="mobile-staging.luminpdf.com"
+					android:pathPattern="/verify-account"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="mobile-staging.luminpdf.com"
+					android:pathPattern="/authentication/reset-password"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for mobile-preproduction -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="mobile-preproduction.luminpdf.com"
+					android:pathPattern="/verify-account"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="mobile-preproduction.luminpdf.com"
+					android:pathPattern="/authentication/reset-password"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for production app.luminpdf.com -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="app.luminpdf.com"
+					android:pathPattern="/verify-account"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="app.luminpdf.com"
+					android:pathPattern="/authentication/reset-password"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for production email.luminpdf.com -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="email.luminpdf.com"
+					android:pathPattern="/verify-account"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="email.luminpdf.com"
+					android:pathPattern="/authentication/reset-password"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for production email.hoan.luminpdf.com -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="email.hoan.luminpdf.com.luminpdf.com"
+					android:pathPattern="/verify-account"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="email.hoan.luminpdf.com.luminpdf.com"
+					android:pathPattern="/authentication/reset-password"
+				/>
+			</intent-filter>
+
+			<!-- DEEPLINK for only viewer	-->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="link.luminpdf.com"
+					android:pathPattern="/viewer/.*"
+				/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="https"
+					android:host="link-test.luminpdf.com"
+					android:pathPattern="/viewer/.*"
+				/>
+			</intent-filter>
+
+			<!-- END listen -->
+		</activity>
+
+		<meta-data
+			android:name="io.branch.sdk.BranchKey"
+			android:value="key_live_ke9dN0pWsdTtpuVcjGW4ZapgAFhZvXQN" />
+	</application>
 </manifest>

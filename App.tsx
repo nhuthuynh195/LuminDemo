@@ -83,7 +83,7 @@ export default class App extends Component<Props> {
       <DocumentView
         ref={c => (this._viewer = c)}
         // hideDefaultAnnotationToolbars={[Config.DefaultToolbars.Annotate]}
-        // annotationToolbars={[Config.DefaultToolbars.Annotate, myToolbar]}
+        annotationToolbars={[Config.DefaultToolbars.Annotate, myToolbar]}
         hideAnnotationToolbarSwitcher={false}
         hideTopToolbars={false}
         hideTopAppNavBar={false}
@@ -108,6 +108,7 @@ export default class App extends Component<Props> {
         ]}
         fitMode={Config.FitMode.FitPage}
         layoutMode={Config.LayoutMode.Continuous}
+        collabEnabled={true}
       />
     );
   }
